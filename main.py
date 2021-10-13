@@ -135,6 +135,66 @@ def test_get_longest_powers_of_k():
    assert get_longest_powers_of_k([], 5) == []
 
 
+def sum_of_all_items(list):
+    '''
+    Determina suma elementelor din lista.
+    :param list: lista data.
+    :return: suma elementelor.
+    '''
+    sum = 0
+    for x in list:
+      sum = sum + x
+    return sum
+
+
+def test_sum_of_all_items():
+    assert sum_of_all_items([]) == 0
+    assert sum_of_all_items([1, 2, 3, 4]) == 10
+    assert sum_of_all_items([5, 5, 7, 3]) == 20
+
+
+def aritmetic_mean_from_list(list):
+    '''
+    Determina media aritmetica a elementelor unei liste.
+    :param list: lista data.
+    :return: media aritmetica.
+    '''
+    sum = sum_of_all_items(list)
+    num_elements = len(list)
+    if num_elements == 0:
+        return 0
+    else:
+        ma = sum / num_elements
+    return ma
+
+
+def test_aritmetic_mean_from_list():
+    assert aritmetic_mean_from_list([]) == 0
+    assert aritmetic_mean_from_list([1, 2, 3, 4]) == 2.5
+    assert aritmetic_mean_from_list([100, 120, 250]) == 156.66666666666666
+
+
+def get_longest_average_below(lst, average):
+    '''
+    Determina cea mai lunga subsecventa de numere a caror medie nu depaseste o valoare data.
+    :param lst: lista data.
+    :param average: valoarea care nu trebuie depasita.
+    :return: subsecventa maxima cu proprietatea ceruta.
+    '''
+    subsecventaMax = []
+    for i in range(len(lst)):
+        for j in range(len(lst)):
+            if aritmetic_mean_from_list(lst[i:j+1]) <= average and len(subsecventaMax) < len(lst[i:j+1]):
+                subsecventaMax = lst[i:j+1]
+    return subsecventaMax
+
+
+def test_get_longest_average_below():
+    assert get_longest_average_below([5, 3, 22, 23], 9) == [5, 3]
+    assert get_longest_average_below([2, 4, 3, 66, 76, 34], 5.6) == [2, 4, 3]
+    assert get_longest_average_below([1, 2, 6, 12], 5.1) == [1, 2, 6]
+
+
 def all_tests_functions():
     test_isPalindrome()
     test_is_all_elements_palindromes()
@@ -142,12 +202,16 @@ def all_tests_functions():
     test_isPower()
     test_is_all_elemnts_at_k_power()
     test_get_longest_powers_of_k()
+    test_aritmetic_mean_from_list()
+    test_sum_of_all_items()
+    test_get_longest_average_below()
 
 
 def printMenu():
     print("1.Citire lista.")
     print("2.Determina cea mai lunga subsecventa de numere palindroame.")
     print("3.Determina cea mai lunga subsecventa de numere care se pot scrie ca x**k, k citit, x întreg pozitiv.")
+    print("4.Determina cea mai lunga subsecventa de numere a caror medie nu depaseste o valoare data.")
     print("X.Iesire.")
 
 
@@ -164,6 +228,9 @@ if __name__ == "__main__":
         elif optiune == "3":
             k = int(input("Dati k: "))
             print(f'Cea mai lunga subsecventa de numere care se pot scrie ca x^{k} este: {get_longest_powers_of_k(list, k)}')
+        elif optiune == "4":
+            val = float(input("Dati valoarea: "))
+            print(f'Cea mai lunga subsecventa de numere a caror medie nu depaseste {val} este: {get_longest_average_below(list, val)}')
         elif optiune == "X":
             break
         else:
